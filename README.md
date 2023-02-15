@@ -75,7 +75,7 @@ path = "."
 **NB**: The Github Actions use linux and it's case-sensitive, so make sure to have all of your directories ( plugins, include, scripting, gamedata, translations ) lower case.
 
 ## Usage outside of GitHub Actions ##
-1. Download the latest [executable](releases/latest/) and run it inside the folder where sp.toml resides.
+1. Download the latest [executable](https://github.com/Zabaniya001/SPDependy/releases) and run it inside the folder where sp.toml resides.
 
 ## TO-DO ##
 - Implement a Rust-like approach where you can just list the names of the include ( e.g. Stocksoup ) and it'll automatically fetch the URL.
