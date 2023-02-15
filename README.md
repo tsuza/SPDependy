@@ -76,6 +76,7 @@ path = "."
 
 ## Usage outside of GitHub Actions ##
 1. Download the latest [executable](https://github.com/Zabaniya001/SPDependy/releases) and run it inside the folder where sp.toml resides.
+  - *It's recommended to run it inside the terminal and put your [github token](https://github.com/settings/tokens/new) after it so you don't run against call request limits. However, you'll be just fine unless you run it like 70 times in 10 minutes*
 
 ## TO-DO ##
 - Implement a Rust-like approach where you can just list the names of the include ( e.g. Stocksoup ) and it'll automatically fetch the URL.
