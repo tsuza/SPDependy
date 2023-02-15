@@ -33,9 +33,9 @@ jobs:
 
       - name: Install the go scripts
         run: |
-          wget "https://raw.githubusercontent.com/Zabaniya001/SPDependy/master/main.go"
-          wget "https://raw.githubusercontent.com/Zabaniya001/SPDependy/master/go.mod"
-          wget "https://raw.githubusercontent.com/Zabaniya001/SPDependy/master/go.sum"
+          wget "https://raw.githubusercontent.com/Zabaniya001/SPDependy/660cf458055804d1defb258a1d774291e61bd1e2/main.go"
+          wget "https://raw.githubusercontent.com/Zabaniya001/SPDependy/660cf458055804d1defb258a1d774291e61bd1e2/go.mod"
+          wget "https://raw.githubusercontent.com/Zabaniya001/SPDependy/660cf458055804d1defb258a1d774291e61bd1e2/go.sum"
         working-directory: ${{ env.SCRIPTS_PATH }}
 
       - name: Install dependencies
