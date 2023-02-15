@@ -1,0 +1,16 @@
+# EXAMPLE SP.TOML
+# Make sure this is in the base directory of the repository
+#
+# [Compile]
+# plugins = [
+#     "AllClassReviveMarker",
+#     "test"
+# ]
+
+# [[dependency]]
+# url = "https://github.com/nosoop/stocksoup"
+# path = "stocksoup"
+
+# [[dependency]]
+# url = "https://github.com/DosMike/tf2hudmsg/blob/master/tf2hudmsg.inc"
+# path = "."
