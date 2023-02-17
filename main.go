@@ -48,7 +48,7 @@ func main() {
 
 		fmt.Println(dependency.URL)
 
-		download(APIURL, "scripting/include/"+dependency.Path)
+		download(APIURL, ".temp/include/"+dependency.Path)
 	}
 }
 

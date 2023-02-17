@@ -13,10 +13,10 @@ jobs:
       contents: write
 
     steps:
+      - uses: actions/checkout@v3
+
       - name: Set environment variables
         run: echo SCRIPTS_PATH=$(pwd) >> $GITHUB_ENV
-
-      - uses: actions/checkout@v3
 
       - name: Set up Go
         uses: actions/setup-go@v2
@@ -42,24 +42,10 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          tag: v1.0.0
-          artifacts: "SPDependyLinux"
+          tag: manual
+          artifacts: "SPDependyWin.exe,SPDependyLinux"
           body: ${{ steps.changelog.outputs.changes }}
           draft: false
           allowUpdates: true
           prerelease: false
           replacesArtifacts: true
-
-      - name: Create Release
-        uses: ncipollo/release-action@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          tag: v1.0.0
-          artifacts: "SPDependyWin.exe"
-          body: ${{ steps.changelog.outputs.changes }}
-          draft: false
-          allowUpdates: true
-          prerelease: false
-          replacesArtifacts: true 
