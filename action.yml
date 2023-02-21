@@ -1,0 +1,40 @@
+name: 'Download SourcePawn plugin dependencies'
+description: 'Download plugin dependencies'
+author: 'Zabaniya001'
+
+inputs:
+  github_token:
+    description: 'Github token. It is useful to not run into "exceeded call limit".'
+    required: true
+
+  file_name:
+    description: 'The name of the file where the dependencies are stored. Default: ./sp.toml'
+    required: false
+    default: 'sp.toml'
+
+  output_directory:
+    description: 'The directory where you want to put the downloaded includes. Default: ./.temp/includes/'
+    required: false
+    default: '.temp/include/'
+
+runs:
+  using: "composite"
+  steps:
+    - name: 'Setup Go!'
+      uses: actions/setup-go@v3
+
+    - name: 'Install SPDependy dependencies'
+      run: |
+        ls -r
+        go mod download
+      shell: bash
+      working-directory: ${{ github.action_path }}
+
+    - name: 'Run SPDependy'
+      run: go run main.go ${{ inputs.github_token }} $GITHUB_WORKSPACE/${{ inputs.file_name }} $GITHUB_WORKSPACE/${{ inputs.output_directory }}
+      shell: bash
+      working-directory: ${{ github.action_path }}
+
+branding:
+  icon: 'download'
+  color: 'blue'

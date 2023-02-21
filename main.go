@@ -32,10 +32,24 @@ type TomlSPFile struct {
 var token string
 
 func main() {
-	token = getGithubToken()
+	args := os.Args
+
+	configFilePath := "sp.toml"
+	includesOutputPath := ".temp/include/"
+
+	switch {
+	case len(args) > 1:
+		token = args[1]
+		fallthrough
+	case len(args) > 2:
+		configFilePath = args[2]
+		fallthrough
+	case len(args) > 3:
+		includesOutputPath = args[3]
+	}
 
 	var tomlFile TomlSPFile
-	_, err := toml.DecodeFile("sp.toml", &tomlFile)
+	_, err := toml.DecodeFile(configFilePath, &tomlFile)
 
 	if err != nil {
 		log.Fatalln(err.Error())
@@ -48,7 +62,7 @@ func main() {
 
 		fmt.Println(dependency.URL)
 
-		download(APIURL, ".temp/include/"+dependency.Path)
+		download(APIURL, includesOutputPath+dependency.Path)
 	}
 }
 
@@ -172,14 +186,4 @@ func getAPIURL(url string) string {
 	}
 
 	return "https://api.github.com/repos/" + match[1] + "/" + match[2] + "/contents" + match[4] + repository
-}
-
-func getGithubToken() string {
-	args := os.Args
-
-	if len(args) > 1 {
-		return args[1]
-	} else {
-		return ""
-	}
 }
