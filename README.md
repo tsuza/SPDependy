@@ -89,6 +89,8 @@ output_directory
   - Default value: '.temp/include/'
 ```
 
+If you want an example workflow file, check out the [example](example) folder.
+
 **NB**: The Github Actions use linux and it's case-sensitive, so make sure to have all of your directories ( plugins, include, scripting, gamedata, translations ) lower case.
 
 ## Usage outside of GitHub Actions ##
