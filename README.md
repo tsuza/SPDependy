@@ -43,14 +43,14 @@ Here is one of my repositories that use this script to compile and release a plu
 Note that the Compile section is not used by the Go script itself, but it gets used by the github action to compile all the listed plugins.
 
 To add includes, you just need to add:
-```
+```toml
 [[dependency]]
 url = "github url to the include folder OR include file"
 path = "directory where you want to download the includes. If you just want to download them inside the include folder, just put a ."
 ```
 
 Here is an example:
-```
+```toml
 [Compile]
 plugins = [
     "AllClassReviveMarker",
@@ -67,10 +67,27 @@ path = "."
 ```
 
 ## Usage in GitHub Actions ##
-1. Create a `sp.toml` at the base of your repository where you list your dependencies ( [check the sp.toml in this repository if you want an example](sp.toml) ).
-2. Copy the folder [.github/workflows that is in example](example) inside your own repository.
-  - The github action will assume that your plugin has the same name as your repository. This is used ONLY for creating the tag for the release. If it has a different name, go to the .yml scripts and change `${{ github.event.repository.name }}` into your plugin's name ( for example `hello_plugin`, without the .sp ) from `echo "PLUGIN_NAME_ENV=${{ github.event.repository.name }}" >> $GITHUB_ENV`.
-3. That's it.
+Just shove this in your workflow and you're good to go.
+```yaml
+- name: Download the includes downloader
+  uses: Zabaniya001/SPDependy@v1
+  with:
+    github_token: '${{ secrets.GITHUB_TOKEN }}'
+```
+
+### Variables: ###
+```
+github_token
+  - Required.
+
+file_name
+  - Not required.
+  - Default value: 'sp.toml'
+
+output_directory
+  - Not required.
+  - Default value: '.temp/include/'
+```
 
 **NB**: The Github Actions use linux and it's case-sensitive, so make sure to have all of your directories ( plugins, include, scripting, gamedata, translations ) lower case.
 
