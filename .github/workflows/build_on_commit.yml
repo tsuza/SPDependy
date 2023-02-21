@@ -1,7 +1,7 @@
 name: Compile and release
 
 on:
-  push:
+  workflow_dispatch:
     branches: master
 
 jobs:
