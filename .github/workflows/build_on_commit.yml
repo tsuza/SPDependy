@@ -15,27 +15,17 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+
       - name: Set environment variables
         run: echo SCRIPTS_PATH=$(pwd) >> $GITHUB_ENV
 
-      - name: Set up Go
-        uses: actions/setup-go@v2
-
-      - name: Install dependencies
-        run: go mod download
+      - name: Build the rust project
+        run: cargo build --release
         working-directory: ${{ env.SCRIPTS_PATH }}
-      
-      - name: Compile.
-        run: |
-          set GOARCH=amd64
-          set GOOS=linux
-          go build -o SPDependyLinux
-
-          set GOARCH=amd64
-          set GOOS=windows
-          go build -o SPDependyWin.exe
-        working-directory: ${{ env.SCRIPTS_PATH }}
-
+        
       - name: Create Release
         uses: ncipollo/release-action@v1
         env:
@@ -43,7 +33,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           tag: manual
-          artifacts: "SPDependyWin.exe,SPDependyLinux"
+          artifacts: "target/release/SPDependy.exe,target/release/SPDependy"
           body: ${{ steps.changelog.outputs.changes }}
           draft: false
           allowUpdates: true
