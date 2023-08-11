@@ -1,16 +1,19 @@
 name: Compile and release
 
 on:
-  workflow_dispatch:
-    branches: master
+  push:
+    branches: [main, master]
 
 jobs:
   build:
-    runs-on: ubuntu-latest
     strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
       fail-fast: false
     permissions:
       contents: write
+    
+    runs-on: ${{ matrix.os }}
 
     steps:
       - uses: actions/checkout@v3
@@ -21,10 +24,23 @@ jobs:
 
       - name: Set environment variables
         run: echo SCRIPTS_PATH=$(pwd) >> $GITHUB_ENV
+      
+      - name: Cache cargo registry
+        uses: actions/cache@v3
+        with:
+          path: ~/.cargo/registry
+          key: ${{ runner.os }}-cargo-registry-${{ hashFiles('Cargo.lock') }}
+
+      - name: Cache cargo build
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cargo/bin/
+            target
+          key: ${{ runner.os }}-cargo-build-target-${{ hashFiles('Cargo.lock') }}
 
       - name: Build the rust project
         run: cargo build --release
-        working-directory: ${{ env.SCRIPTS_PATH }}
         
       - name: Create Release
         uses: ncipollo/release-action@v1

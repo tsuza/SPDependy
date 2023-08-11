@@ -24,8 +24,15 @@ async fn main() -> Result<(), Box<dyn error::Error>> {
     let token = format!("token {}", args.token);
 
     for dependency in &sourcepawn_dependencies {
-        let api_url = get_api_url(&dependency.url)?;
-        let output_path = format!("{}{}", args.output_path, dependency.path);
+        let api_url: String = get_api_url(&dependency.url)?;
+
+        let mut output_path: String;
+
+        if dependency.path == "." {
+            output_path = args.output_path.clone();
+        } else {
+            output_path = format!("{}{}", args.output_path, dependency.path);
+        }
 
         download_dependency(&token, &api_url, &output_path).await?;
     }
@@ -62,7 +69,7 @@ async fn download_dependency(
     let repository_layout = repository_layout.parse();
 
     if !path::Path::new(&directory).try_exists()? {
-        fs::create_dir_all(directory)?;
+        fs::create_dir_all(&directory)?;
     }
 
     for file in repository_layout.iter() {
