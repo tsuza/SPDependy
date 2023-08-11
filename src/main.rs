@@ -1,11 +1,10 @@
 use async_recursion::async_recursion;
 use clap::Parser;
+use once_cell::sync::Lazy;
 use regex::Regex;
 use reqwest::{self};
-use std::error;
-use std::fs;
 use std::io::{self};
-use std::path;
+use std::{error, fs, path};
 
 mod structs;
 
@@ -33,8 +32,7 @@ async fn main() -> Result<(), Box<dyn error::Error>> {
 }
 
 fn parse_dependencies(config_path: &String) -> Result<Vec<Dependency>, io::Error> {
-    let file_contents =
-        fs::read_to_string(config_path)?;
+    let file_contents = fs::read_to_string(config_path)?;
 
     let dependencies: DependencyConfigFile = toml::from_str(&file_contents).unwrap();
 
@@ -66,7 +64,7 @@ async fn download_dependency(
     }
 
     for file in repository_layout.iter() {
-           let new_file_path = format!("{}/{}", directory, file.name);
+        let new_file_path = format!("{}/{}", directory, file.name);
 
         match file.file_type.as_str() {
             "dir" => {
@@ -99,9 +97,9 @@ async fn download_dependency(
 }
 
 fn get_api_url(url: &str) -> Result<String, Box<dyn error::Error>> {
-    let re = Regex::new(GITHUB_LINK_REGEX_EXPRESSION)?; // See if you can make this global, or at least created only once.
-
-    let test = re.captures(url).unwrap();
+    static RE: Lazy<Regex> = Lazy::new(|| Regex::new(GITHUB_LINK_REGEX_EXPRESSION).unwrap());
+    
+    let test = RE.captures(url).unwrap();
 
     let username = test.name("username").unwrap().as_str();
     let repository = test.name("repository").unwrap().as_str();
@@ -113,8 +111,8 @@ fn get_api_url(url: &str) -> Result<String, Box<dyn error::Error>> {
         username, repository, path
     );
 
-    if branch.is_some() {
-        api_url = format!("{}?ref={}", api_url, branch.unwrap().as_str());
+    if let Some(branch_str) = branch {
+        api_url = format!("{}?ref={}", api_url, branch_str.as_str());
     }
 
     Ok(api_url)
