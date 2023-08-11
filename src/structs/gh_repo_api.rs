@@ -7,22 +7,34 @@ pub enum RepositoryLayout {
     Single(FileInfo),
 }
 
-#[derive(serde::Deserialize)]
+#[derive(serde::Deserialize, Debug)]
 pub struct FileInfo {
     pub name: String,
 
     #[serde(deserialize_with = "deserialize_null_default")]
     pub download_url: String,
 
-    #[serde(rename = "type", default)]
-    pub file_type: String,
+    #[serde(rename = "type")]
+    pub file_type: FileType,
 
     #[serde(rename = "_links")]
-    pub links: TemporaryName,
+    pub links: LinksObject,
 }
 
-#[derive(serde::Deserialize)]
-pub struct TemporaryName {
+#[derive(serde::Deserialize, Debug)]
+pub enum FileType {
+    #[serde(rename = "file")]
+    File,
+
+    #[serde(rename = "dir")]
+    Directory,
+
+    #[serde(other)]
+    Unknown,
+}
+
+#[derive(serde::Deserialize, Debug)]
+pub struct LinksObject {
     #[serde(rename = "self")]
     pub link: String,
 }

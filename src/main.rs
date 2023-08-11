@@ -9,7 +9,7 @@ use std::{error, fs, path};
 mod structs;
 
 use crate::structs::args::SPDependyArgs;
-use crate::structs::gh_repo_api::RepositoryLayout;
+use crate::structs::gh_repo_api::{FileType, RepositoryLayout};
 use crate::structs::sourcepawn_dependencies::{Dependency, DependencyConfigFile};
 
 const GITHUB_LINK_REGEX_EXPRESSION: &str = "https://github.com/(?P<username>[^/]+)/(?P<repository>[^/]+)(?:/(?:tree|blob)/(?P<branch>[^/]+)/?)?(?P<path>.*)?$";
@@ -21,11 +21,13 @@ async fn main() -> Result<(), Box<dyn error::Error>> {
     let sourcepawn_dependencies: Vec<Dependency> =
         parse_dependencies(&args.dependencies_config_path)?;
 
+    let token = format!("token {}", args.token);
+
     for dependency in &sourcepawn_dependencies {
         let api_url = get_api_url(&dependency.url)?;
         let output_path = format!("{}{}", args.output_path, dependency.path);
 
-        download_dependency(&args.token, &api_url, &output_path).await?;
+        download_dependency(&token, &api_url, &output_path).await?;
     }
 
     Ok(())
@@ -66,13 +68,13 @@ async fn download_dependency(
     for file in repository_layout.iter() {
         let new_file_path = format!("{}/{}", directory, file.name);
 
-        match file.file_type.as_str() {
-            "dir" => {
+        match file.file_type {
+            FileType::Directory => {
                 download_dependency(token, &file.links.link, &new_file_path).await?;
 
                 continue;
             }
-            "file" => {
+            FileType::File => {
                 if !file.name.ends_with(".inc") {
                     continue;
                 }
@@ -98,7 +100,7 @@ async fn download_dependency(
 
 fn get_api_url(url: &str) -> Result<String, Box<dyn error::Error>> {
     static RE: Lazy<Regex> = Lazy::new(|| Regex::new(GITHUB_LINK_REGEX_EXPRESSION).unwrap());
-    
+
     let test = RE.captures(url).unwrap();
 
     let username = test.name("username").unwrap().as_str();

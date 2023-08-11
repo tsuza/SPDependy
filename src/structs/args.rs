@@ -3,6 +3,7 @@ use clap::Parser;
 const CONFIG_DEFAULT_PATH: &str = "sp.toml";
 const OUTPUT_DEFAULT_PATH: &str = ".temp/include/";
 
+// TO-DO: Switch from String to Path for the paths.
 #[derive(Parser)]
 #[clap(author, version, about)]
 pub struct SPDependyArgs {
