@@ -26,21 +26,16 @@
 </div>
 
 ## Example ##
-Here is one of my repositories that use this script to compile and release a plugin: [AllClassReviveMarker](https://github.com/Zabaniya001/AllClassReviveMarker)
+Here is one of my repositories that uses this script to compile and release a plugin: [AllClassReviveMarker](https://github.com/Zabaniya001/AllClassReviveMarker)
 
 
 ## Requirements to compile the script  ##
 1. Clone the repository.
-2. Run `go mod download` inside the folder where the repository resides. This download the dependencies.
-3. Run `go build`.
+2. Run `rust build` ( if you don't have Rust, download it from the official website ).
 4. It's compiled!
 
-### List of used third-party modules ###
-
-- [Toml by BurntSushi](https://github.com/BurntSushi/toml)
-
 ## sp.toml ##
-Note that the Compile section is not used by the Go script itself, but it gets used by the github action to compile all the listed plugins.
+Note that the Compile section is not used by the script itself, but it gets used by the github action to compile all the listed plugins.
 
 To add includes, you just need to add:
 ```toml
@@ -70,10 +65,12 @@ path = "."
 Just shove this in your workflow and you're good to go.
 ```yaml
 - name: Download the includes downloader
-  uses: Zabaniya001/SPDependy@v1
+  uses: Zabaniya001/SPDependy@v2
   with:
     github_token: '${{ secrets.GITHUB_TOKEN }}'
 ```
+
+If if it's giving you any problems use v1 instead ( Zabaniya001/SPDependy@v1 ) and open an issue.
 
 ### Variables: ###
 ```
@@ -91,7 +88,7 @@ output_directory
 
 If you want an example workflow file, check out the [example](example) folder.
 
-**NB**: The Github Actions use linux and it's case-sensitive, so make sure to have all of your directories ( plugins, include, scripting, gamedata, translations ) lower case.
+**NB**: Since this will be run on a Linux runner most likely, make sure to have all of your directories ( plugins, include, scripting, gamedata, translations ) lower case.
 
 ## Usage outside of GitHub Actions ##
 1. Download the latest [executable](https://github.com/Zabaniya001/SPDependy/releases) and run it inside the folder where sp.toml resides.
@@ -101,4 +98,4 @@ If you want an example workflow file, check out the [example](example) folder.
 - Implement a Rust-like approach where you can just list the names of the include ( e.g. Stocksoup ) and it'll automatically fetch the URL.
 
 ## N.B ##
-**This is my first Go script and I learnt it on the spot while writing this script. If there are any suggestions or improvements, open an issue!**
+**This is my first Rust script. If there are any suggestions or improvements, open an issue!**
