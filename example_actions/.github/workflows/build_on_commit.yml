@@ -27,18 +27,18 @@ jobs:
         with:
           version: "1.11.x"
           version-file: ./scripting/${{ env.PLUGIN_NAME_ENV }}.sp
-      
+
       - name: Download SourcePawn plugin dependencies
-        uses: Zabaniya001/SPDependy@v2
+        uses: tsuza/SPDependy@v2
         with:
-          github_token: '${{ secrets.GITHUB_TOKEN }}'
+          github_token: "${{ secrets.GITHUB_TOKEN }}"
 
       - name: Parse toml
         uses: SebRollen/toml-action@v1.0.1
         id: read_toml
         with:
-          file: 'sp.toml'
-          field: 'Compile.plugins'
+          file: "sp.toml"
+          field: "Compile.plugins"
 
       - name: Compile plugins
         run: |
@@ -70,4 +70,3 @@ jobs:
           allowUpdates: true
           prerelease: false
           replacesArtifacts: true
-          

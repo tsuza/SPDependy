@@ -26,7 +26,7 @@
 </div>
 
 ## Example ##
-Here is one of my repositories that uses this script to compile and release a plugin: [AllClassReviveMarker](https://github.com/Zabaniya001/AllClassReviveMarker)
+Here is one of my repositories that uses this script to compile and release a plugin: [AllClassReviveMarker](https://github.com/tsuza/AllClassReviveMarker)
 
 
 ## Requirements to compile the script  ##
@@ -65,12 +65,12 @@ path = "."
 Just shove this in your workflow and you're good to go.
 ```yaml
 - name: Download the includes downloader
-  uses: Zabaniya001/SPDependy@v2
+  uses: tsuza/SPDependy@v2
   with:
     github_token: '${{ secrets.GITHUB_TOKEN }}'
 ```
 
-If if it's giving you any problems use v1 instead ( Zabaniya001/SPDependy@v1 ) and open an issue.
+If it's giving you any problems use v1 instead ( tsuza/SPDependy@v1 ) and open an issue.
 
 ### Variables: ###
 ```
